@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectToDictionary", "ObjectToDictionary\ObjectToDictionary.csproj", "{52226CB0-7B77-4C27-9D6E-4A797047B163}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{DF4D0533-1E7C-42EE-B4AC-183330634E95}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{52226CB0-7B77-4C27-9D6E-4A797047B163}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52226CB0-7B77-4C27-9D6E-4A797047B163}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52226CB0-7B77-4C27-9D6E-4A797047B163}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52226CB0-7B77-4C27-9D6E-4A797047B163}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF4D0533-1E7C-42EE-B4AC-183330634E95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF4D0533-1E7C-42EE-B4AC-183330634E95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF4D0533-1E7C-42EE-B4AC-183330634E95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF4D0533-1E7C-42EE-B4AC-183330634E95}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

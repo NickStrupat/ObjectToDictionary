@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>NickStrupat.ObjectToDictionary</RootNamespace>
+        <Version>0.0.1</Version>
+        <Title>ObjectToDictionary</Title>
+        <Authors>Nick Strupat</Authors>
+        <Description>Convert .NET objects to Dictionary&lt;string, object&gt; with cached IL-emitted converters for both value and reference types.</Description>
+        <PackageLicenseUrl>https://github.com/NickStrupat/ObjectToDictionary/blob/main/LICENSE</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/NickStrupat/ObjectToDictionary</RepositoryUrl>
+        <PackageTags>dictionary dynamic</PackageTags>
+    </PropertyGroup>
+
+</Project>
