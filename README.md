@@ -59,7 +59,8 @@ struct Baz
 ## Implementation details
 
 - The returned Dictionary is an ordinary instance of the `Dictionary<string, object>` class
-- Only properties with a public getter are included in the dictionary
+- Primitive types, strings, and arrays return an empty dictionary
+- Only public fields and properties with a public getter are included in the dictionary
 - Keys are the names of the properties of the object
 - Values are the values of the properties of the object
 - Values are boxed if they are value types

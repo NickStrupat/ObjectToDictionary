@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
+using static System.Reflection.BindingFlags;
 
 namespace NickStrupat.ObjectToDictionary;
 
@@ -16,7 +17,11 @@ public static class Extensions
 		public static Dict Map(T obj) => Mapper.Invoke(obj);
 		
 		private static readonly Func<T, Dict> Mapper =
-			typeof(T).IsValueType | typeof(T).IsSealed ? CreateExactMapper() : CreateDynamicMapper();
+			typeof(T).IsEnum | typeof(T).IsPrimitive | typeof(T) == typeof(String) | typeof(T).IsArray | typeof(T) == typeof(Delegate)
+				? static _ => new()
+				: typeof(T).IsValueType | typeof(T).IsSealed
+					? CreateExactMapper()
+					: CreateDynamicMapper();
 
 		private static Func<T, Dict> CreateExactMapper()
 		{
@@ -24,12 +29,9 @@ public static class Extensions
 			var dm = new DynamicMethod(methodName, returnType: typeof(Dict), parameterTypes: new[] { typeof(T) });
 			var il = dm.GetILGenerator();
 			
-			var properties =
-				typeof(T)
-					.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-					.Where(p => p.GetGetMethod(nonPublic: false) is not null)
-					.ToList();
-			
+			var properties = typeof(T).GetProperties(Public | Instance).Where(p => p.GetGetMethod() is not null);
+			var fields = typeof(T).GetFields(Public | Instance);
+
 			il.Emit(OpCodes.Newobj, DictionaryConstructorInfo);
 			foreach (var property in properties)
 			{
@@ -39,6 +41,16 @@ public static class Extensions
 				il.Emit(OpCodes.Call, property.GetGetMethod(nonPublic: false)!);
 				if (property.PropertyType.IsValueType)
 					il.Emit(OpCodes.Box, property.PropertyType);
+				il.Emit(OpCodes.Callvirt, DictionaryAddMethodInfo);
+			}
+			foreach (var field in fields)
+			{
+				il.Emit(OpCodes.Dup);
+				il.Emit(OpCodes.Ldstr, field.Name);
+				il.Emit(OpCodes.Ldarg_0);
+				il.Emit(OpCodes.Ldfld, field);
+				if (field.FieldType.IsValueType)
+					il.Emit(OpCodes.Box, field.FieldType);
 				il.Emit(OpCodes.Callvirt, DictionaryAddMethodInfo);
 			}
 			il.Emit(OpCodes.Ret);

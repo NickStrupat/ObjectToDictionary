@@ -41,7 +41,44 @@ public class ToDictionaryUnitTests
 		dict.Should().ContainKey("Text");
 		dict["Text"].Should().Be("Test");
 	}
+
+	[Fact]
+	public void AnonymousType()
+	{
+		var anon = new {Text = "Test"};
+		var dict = anon.ToDictionary();
+
+		dict.Should().BeOfType<Dictionary<String, Object>>();
+		dict.Should().HaveCount(1);
+		dict.Should().ContainKey("Text");
+		dict["Text"].Should().Be("Test");
+	}
 	
+	[Fact]
+	public void TupleType()
+	{
+		var tuple = Tuple.Create("Test");
+		var dict = tuple.ToDictionary();
+		
+		dict.Should().BeOfType<Dictionary<String, Object>>();
+		dict.Should().HaveCount(1);
+		dict.Should().ContainKey("Item1");
+		dict["Item1"].Should().Be("Test");
+	}
+	
+	[Fact]
+	public void ValueTupleType()
+	{
+		var tuple = ("Test", 1);
+		var dict = tuple.ToDictionary();
+		
+		dict.Should().BeOfType<Dictionary<String, Object>>();
+		dict.Should().HaveCount(2);
+		dict.Should().ContainKey("Item1");
+		dict["Item1"].Should().Be("Test");
+		dict.Should().ContainKey("Item2");
+		dict["Item2"].Should().Be(1);
+	}
 	[Fact]
 	public void EnumType()
 	{
@@ -61,7 +98,35 @@ public class ToDictionaryUnitTests
 		dict.Should().BeOfType<Dictionary<String, Object>>();
 		dict.Should().NotBeEmpty();
 	}
-	
+
+	[Theory]
+	[InlineData(1)]
+	[InlineData(1u)]
+	[InlineData(1L)]
+	[InlineData(1UL)]
+	[InlineData(1.0d)]
+	[InlineData(1.0f)]
+	[InlineData(true)]
+	[InlineData('a')]
+	[InlineData("Test")]
+	public void PrimitiveTypes<T>(T value) where T : notnull
+	{
+		var dict = value.ToDictionary();
+		
+		dict.Should().BeOfType<Dictionary<String, Object>>();
+		dict.Should().BeEmpty();
+	}
+
+	[Fact]
+	public void ArrayType()
+	{
+		var array = new[] {1, 2, 3};
+		var dict = array.ToDictionary();
+		
+		dict.Should().BeOfType<Dictionary<String, Object>>();
+		dict.Should().BeEmpty();
+	}
+
 	sealed class Sealed : Interface { public required String Text { get; set; } }
 	class Virtual { public required String Text { get; set; } }
 	struct Struct { public required String Text { get; set; } }
