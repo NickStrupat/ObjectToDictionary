@@ -31,6 +31,18 @@ public class ToDictionaryUnitTests
 	}
 	
 	[Fact]
+	public void DerivedClass_WherePropertyGetterIsOverridden()
+	{
+		Abstract @abstract = new Derived { Text = "Test" };
+		var dict = @abstract.ToDictionary();
+		
+		dict.Should().BeOfType<Dictionary<String, Object>>();
+		dict.Should().HaveCount(1);
+		dict.Should().ContainKey("Text");
+		dict["Text"].Should().Be("TestDerived");
+	}
+	
+	[Fact]
 	public void StructType()
 	{
 		Struct @struct = new Struct { Text = "Test" };
@@ -133,4 +145,6 @@ public class ToDictionaryUnitTests
 	enum Enum { What }
 	interface Interface {}
 	delegate void Delegate();
+	abstract class Abstract { public virtual required String Text { get; set; } }
+	class Derived : Abstract { public override required String Text { get => base.Text + "Derived"; set => base.Text = value; } }
 }
