@@ -38,10 +38,10 @@ public static class Extensions
 				il.Emit(OpCodes.Dup);
 				il.Emit(OpCodes.Ldstr, property.Name);
 				il.Emit(typeof(T).IsValueType ? OpCodes.Ldarga_S : OpCodes.Ldarg, 0);
-				il.Emit(OpCodes.Call, property.GetGetMethod(nonPublic: false)!);
+				il.Emit(OpCodes.Call, property.GetGetMethod(nonPublic: false)!); // don't need to call virtually because T is the actual instance type
 				if (property.PropertyType.IsValueType)
 					il.Emit(OpCodes.Box, property.PropertyType);
-				il.Emit(OpCodes.Callvirt, DictionaryAddMethodInfo);
+				il.Emit(OpCodes.Call, DictionaryAddMethodInfo);
 			}
 			foreach (var field in fields)
 			{
@@ -51,7 +51,7 @@ public static class Extensions
 				il.Emit(OpCodes.Ldfld, field);
 				if (field.FieldType.IsValueType)
 					il.Emit(OpCodes.Box, field.FieldType);
-				il.Emit(OpCodes.Callvirt, DictionaryAddMethodInfo);
+				il.Emit(OpCodes.Call, DictionaryAddMethodInfo);
 			}
 			il.Emit(OpCodes.Ret);
 		
